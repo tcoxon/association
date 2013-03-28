@@ -7,6 +7,7 @@ import urllib2
 
 _COUNT_URL = 'https://ajax.googleapis.com/ajax/services/search/web?v=1.0&q='
 _AUTOCOMPLETE_URL = 'http://suggestqueries.google.com/complete/search?client=chrome&q='
+_GOOGLE_ENCODING = 'latin-1'
 
 
 _last_query_time = 0.0
@@ -33,7 +34,8 @@ def count_pages(q):
     status = 0
     response = None
     while status != 200:
-        response = json.load(urlopen(_COUNT_URL + quote_plus(q)))
+        response = json.load(urlopen(_COUNT_URL + quote_plus(q)),
+                encoding=_GOOGLE_ENCODING)
         status = response['responseStatus']
         if status != 200:
             time.sleep(_FAIL_DELAY)
@@ -61,6 +63,7 @@ def relevancy(x, y):
 
 
 def autocomplete(q):
-    results = json.load(urlopen(_AUTOCOMPLETE_URL + quote_plus(q)))
+    results = json.load(urlopen(_AUTOCOMPLETE_URL + quote_plus(q)),
+            encoding=_GOOGLE_ENCODING)
     return [val for val in results[1] if val.startswith(q)]
 

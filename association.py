@@ -12,8 +12,11 @@ def choose_next_word(prev_word):
     words = []
     for q in _QUERIES:
         q = q.format(word=prev_word)
-        words.extend([x[len(q):].strip()
-            for x in google.autocomplete(q)[:5]])
+        results = [x[len(q):].strip() for x in google.autocomplete(q)]
+        results1 = [x for x in results if ' ' not in x]
+        if len(results1) != 0:
+            results = results1
+        words.extend(results)
     if len(words) == 0:
         return None
     return random.choice(words)

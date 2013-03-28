@@ -59,3 +59,8 @@ def relevancy(x, y):
     return (float(count_pages(x+' '+y)) /
         min(count_pages(x), count_pages(y)))
 
+
+def autocomplete(q):
+    results = json.load(urlopen(_AUTOCOMPLETE_URL + quote_plus(q)))
+    return [val for val in results[1] if val.startswith(q)]
+
